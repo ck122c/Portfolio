@@ -47,11 +47,11 @@ const app = express();
    SERVER + DB CONFIG SECTION
    ============================================================ */
 const PORT = Number(process.env.PORT) || 5001;
-const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_HOST = readStringEnv('DB_HOST', 'localhost');
 const DB_PORT = Number(process.env.DB_PORT) || 3306;
-const DB_USER = process.env.DB_USER || 'root';
-const DB_PASS = process.env.DB_PASS || '12345678';
-const DB_NAME = process.env.DB_NAME || 'portfolio';
+const DB_USER = readStringEnv('DB_USER', 'root');
+const DB_PASS = readStringEnv('DB_PASS', '12345678');
+const DB_NAME = readStringEnv('DB_NAME', 'portfolio');
 const DB_SSL = readBooleanEnv('DB_SSL', false);
 const DB_SSL_REJECT_UNAUTHORIZED = readBooleanEnv('DB_SSL_REJECT_UNAUTHORIZED', true);
 const ADMIN_PASS = process.env.ADMIN_PASS || 'Chandan@123';
@@ -132,6 +132,13 @@ const db = mysql.createPool({
    ============================================================ */
 function cleanString(value, max = 500) {
   return String(value || '').replace(/\s+/g, ' ').trim().slice(0, max);
+}
+
+function readStringEnv(key, fallback = '') {
+  const value = process.env[key];
+  if (value === undefined || value === null) return fallback;
+  const trimmed = String(value).trim();
+  return trimmed || fallback;
 }
 
 function readBooleanEnv(key, fallback) {
