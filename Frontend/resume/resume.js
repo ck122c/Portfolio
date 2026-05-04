@@ -166,13 +166,13 @@ function renderAtsPanel(upload) {
     updateDownloadButton(null);
     return `<section class="ats-panel">
       <div class="ats-score-wrap">
-        <span class="ats-kicker">Download CV</span>
+        <span class="ats-kicker">Upload CV</span>
         <strong>--<small>/100</small></strong>
         <p>No uploaded CV found</p>
       </div>
       <div class="ats-tips">
         <h2>Upload CV from Admin</h2>
-        <p>Admin panel se ATS friendly PDF/DOCX/TXT resume upload karo. Upload ke baad yahan score, tips, aur direct download button show hoga.</p>
+        <p>Admin panel se ATS friendly PDF/DOCX/TXT resume upload karo. Upload ke baad yahan live preview, ATS score, role type, aur download button show hoga.</p>
         <a href="../admin/login.html" class="download-uploaded-btn muted-action">Open Admin</a>
       </div>
     </section>`;
@@ -221,44 +221,18 @@ function updateDownloadButton(downloadUrl, fileName = "CV") {
 }
 
 function renderResume(resume, upload = fallbackUpload) {
-  const skills = splitSkills(resume.skills);
-  const contacts = [
-    contactLine(resume.email),
-    contactLine(resume.phone),
-    contactLine(resume.location),
-    linkLine("Portfolio", resume.website),
-    linkLine("LinkedIn", resume.linkedin_url),
-    linkLine("GitHub", resume.github_url)
-  ].filter(Boolean).join("");
+  const normalizedUpload = normalizeUpload(upload);
 
   document.getElementById("resumePage").innerHTML = `
-    <header class="resume-head">
-      <div>
-        <h1 class="resume-name">${escapeHtml(resume.full_name)}</h1>
-        <p class="resume-headline">${escapeHtml(resume.headline)}</p>
+    <section class="resume-upload-only">
+      <div class="resume-upload-hero">
+        <span class="ats-kicker">Download CV</span>
+        <h1>CV Preview & ATS Score</h1>
+        <p>Yahan sirf admin se uploaded CV show hoga. Pehle preview dekho, ATS score aur improvement tips check karo, phir download karo.</p>
       </div>
-      <div class="resume-contact">${contacts}</div>
-    </header>
-
-    ${renderAtsPanel(normalizeUpload(upload))}
-    ${buildResumePreview(upload, resume)}
-
-    <div class="resume-grid">
-      <aside>
-        ${skills.length ? `<section class="resume-section">
-          <h2>Skills</h2>
-          <ul class="skill-list">${skills.map((skill) => `<li>${escapeHtml(skill)}</li>`).join("")}</ul>
-        </section>` : ""}
-        ${renderPlainSection("Education", resume.education)}
-        ${renderPlainSection("Certifications", resume.certifications)}
-      </aside>
-
-      <article>
-        ${renderPlainSection("Profile", resume.summary)}
-        ${renderRichSection("Experience", resume.experience)}
-        ${renderRichSection("Projects", resume.projects)}
-      </article>
-    </div>
+      ${renderAtsPanel(normalizedUpload)}
+      ${buildResumePreview(normalizedUpload, resume)}
+    </section>
   `;
 }
 

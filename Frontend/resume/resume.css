@@ -79,17 +79,18 @@ body::before {
 .resume-page {
   position: relative;
   overflow: hidden;
-  min-height: 1120px;
-  padding: 58px;
-  color: #122026;
+  min-height: auto;
+  padding: 34px;
+  color: #eafffb;
   background:
-    linear-gradient(90deg, rgba(9, 201, 177, 0.1), transparent 34%),
-    #f7fbfb;
+    radial-gradient(circle at 8% 10%, rgba(102, 255, 220, 0.22), transparent 30%),
+    radial-gradient(circle at 88% 0%, rgba(66, 165, 255, 0.14), transparent 32%),
+    linear-gradient(145deg, rgba(5, 14, 20, 0.96), rgba(9, 24, 31, 0.92));
   border-radius: 28px;
   border: 1px solid rgba(102, 255, 220, 0.34);
   box-shadow:
     0 28px 90px rgba(0, 0, 0, 0.45),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .resume-page::before {
@@ -101,8 +102,32 @@ body::before {
 }
 
 .resume-loading {
-  color: #1e3a3d;
+  color: #dffefa;
   font-weight: 800;
+}
+
+.resume-upload-only {
+  display: grid;
+  gap: 28px;
+}
+
+.resume-upload-hero {
+  max-width: 760px;
+  padding: 6px 4px 0;
+}
+
+.resume-upload-hero h1 {
+  margin: 0;
+  color: #ffffff;
+  font: 900 clamp(2.1rem, 6vw, 4.1rem)/0.98 Arial, sans-serif;
+  letter-spacing: -0.06em;
+}
+
+.resume-upload-hero p {
+  max-width: 720px;
+  margin: 16px 0 0;
+  color: rgba(234, 255, 251, 0.76);
+  font: 800 clamp(1rem, 2.6vw, 1.18rem)/1.65 Arial, sans-serif;
 }
 
 .resume-head {

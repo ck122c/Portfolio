@@ -54,26 +54,27 @@ const DB_PASS = readStringEnv('DB_PASS', '12345678');
 const DB_NAME = readStringEnv('DB_NAME', 'portfolio');
 const DB_SSL = readBooleanEnv('DB_SSL', false);
 const DB_SSL_REJECT_UNAUTHORIZED = readBooleanEnv('DB_SSL_REJECT_UNAUTHORIZED', true);
-const ADMIN_PASS = process.env.ADMIN_PASS || 'Chandan@123';
+const ADMIN_PASS = readStringEnv('ADMIN_PASS', 'Chandan@123');
 const ADMIN_PASS_ALIASES = new Set([
   normalizeAdminPassword(ADMIN_PASS),
   normalizeAdminPassword('Chandan@123')
 ]);
-const ADMIN_TOKEN_SECRET = process.env.ADMIN_TOKEN_SECRET || `${ADMIN_PASS}:${DB_NAME}:admin-token-secret`;
-const ADMIN_TOKEN_TTL_MS = Number(process.env.ADMIN_TOKEN_TTL_MS) || (12 * 60 * 60 * 1000);
+const ADMIN_TOKEN_SECRET = readStringEnv('ADMIN_TOKEN_SECRET', `${ADMIN_PASS}:${DB_NAME}:admin-token-secret`);
+const ADMIN_TOKEN_TTL_MS = Number(readStringEnv('ADMIN_TOKEN_TTL_MS', '')) || (12 * 60 * 60 * 1000);
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 const MAX_RESUME_BYTES = 8 * 1024 * 1024;
-const ALERT_EMAIL_TO = process.env.ALERT_EMAIL_TO || 'chandankumar122c@gmail.com';
-const MAIL_USER = process.env.MAIL_USER || '';
-const MAIL_PASS = process.env.MAIL_PASS || '';
-const MAIL_HOST = process.env.MAIL_HOST || 'smtp.gmail.com';
-const MAIL_PORT = Number(process.env.MAIL_PORT) || 465;
-const MAIL_SECURE = String(process.env.MAIL_SECURE || 'true').toLowerCase() !== 'false';
-const MAIL_FROM = process.env.MAIL_FROM || MAIL_USER;
-const ALERT_ON_VISIT = String(process.env.ALERT_ON_VISIT || 'true').toLowerCase() !== 'false';
+const ALERT_EMAIL_TO = readStringEnv('ALERT_EMAIL_TO', 'chandankumar122c@gmail.com');
+const MAIL_USER = readStringEnv('MAIL_USER', '');
+// Gmail app passwords are often copied with spaces; SMTP auth needs the compact value.
+const MAIL_PASS = readStringEnv('MAIL_PASS', '').replace(/\s+/g, '');
+const MAIL_HOST = readStringEnv('MAIL_HOST', 'smtp.gmail.com');
+const MAIL_PORT = Number(readStringEnv('MAIL_PORT', '465')) || 465;
+const MAIL_SECURE = readBooleanEnv('MAIL_SECURE', true);
+const MAIL_FROM = readStringEnv('MAIL_FROM', MAIL_USER) || MAIL_USER;
+const ALERT_ON_VISIT = readBooleanEnv('ALERT_ON_VISIT', true);
 const ALERT_VISIT_THROTTLE_MS =
-  (Number(process.env.ALERT_VISIT_THROTTLE_MINUTES) || 30) * 60 * 1000;
-const PUBLIC_SITE_URL = cleanBaseUrl(process.env.PUBLIC_SITE_URL || '');
+  (Number(readStringEnv('ALERT_VISIT_THROTTLE_MINUTES', '30')) || 30) * 60 * 1000;
+const PUBLIC_SITE_URL = cleanBaseUrl(readStringEnv('PUBLIC_SITE_URL', ''));
 
 app.set('trust proxy', 1);
 app.use(cors());
@@ -222,6 +223,7 @@ function getAlertTransporter() {
     host: MAIL_HOST,
     port: MAIL_PORT,
     secure: MAIL_SECURE,
+    pool: true,
     auth: {
       user: MAIL_USER,
       pass: MAIL_PASS
@@ -275,7 +277,7 @@ async function sendEmailAlert(title, fields = {}) {
   }
 
   const { html, text } = buildAlertEmail(title, fields);
-  await transporter.sendMail({
+  const info = await transporter.sendMail({
     from: MAIL_FROM,
     to: ALERT_EMAIL_TO,
     subject: `Portfolio Alert: ${title}`,
@@ -283,12 +285,13 @@ async function sendEmailAlert(title, fields = {}) {
     html
   });
 
+  console.log('✅ Email alert sent:', info.messageId || title);
   return true;
 }
 
 function queueEmailAlert(title, fields = {}) {
   sendEmailAlert(title, fields).catch((error) => {
-    console.error('Email alert failed:', error.message);
+    console.error('Email alert failed:', error.code || '', error.response || error.message);
   });
 }
 
