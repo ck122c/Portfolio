@@ -52,9 +52,8 @@ const DB_PORT = Number(process.env.DB_PORT) || 3306;
 const DB_USER = process.env.DB_USER || 'root';
 const DB_PASS = process.env.DB_PASS || '12345678';
 const DB_NAME = process.env.DB_NAME || 'portfolio';
-const DB_SSL = String(process.env.DB_SSL || 'false').toLowerCase() === 'true';
-const DB_SSL_REJECT_UNAUTHORIZED =
-  String(process.env.DB_SSL_REJECT_UNAUTHORIZED || 'true').toLowerCase() !== 'false';
+const DB_SSL = readBooleanEnv('DB_SSL', false);
+const DB_SSL_REJECT_UNAUTHORIZED = readBooleanEnv('DB_SSL_REJECT_UNAUTHORIZED', true);
 const ADMIN_PASS = process.env.ADMIN_PASS || 'Chandan@123';
 const ADMIN_PASS_ALIASES = new Set([
   normalizeAdminPassword(ADMIN_PASS),
@@ -133,6 +132,12 @@ const db = mysql.createPool({
    ============================================================ */
 function cleanString(value, max = 500) {
   return String(value || '').replace(/\s+/g, ' ').trim().slice(0, max);
+}
+
+function readBooleanEnv(key, fallback) {
+  const raw = process.env[key];
+  if (raw === undefined || raw === null || String(raw).trim() === '') return fallback;
+  return ['1', 'true', 'yes', 'on'].includes(String(raw).trim().toLowerCase());
 }
 
 function normalizeAdminPassword(value) {
