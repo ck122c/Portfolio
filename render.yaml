@@ -30,7 +30,7 @@ services:
       - key: DB_SSL_REJECT_UNAUTHORIZED
         sync: false
       - key: ALERT_EMAIL_TO
-        sync: true
+        sync: false
       - key: MAIL_USER
         sync: false
       - key: MAIL_PASS
