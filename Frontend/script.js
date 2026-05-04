@@ -1372,23 +1372,15 @@ function initContactLocationMap() {
         if (!response.ok) throw new Error("Resume API failed");
         const data = await response.json();
         const score = Number(data?.upload?.ats_score || 0);
-        const uploadPath = data?.upload?.download_url || "";
-        const downloadUrl = /^https?:\/\//i.test(uploadPath)
-          ? uploadPath
-          : `${base}${uploadPath || "/resume/resume.html"}`;
-
         if (badge) {
           badge.innerText = data?.upload ? `ATS Score: ${score}/100` : "ATS Score: Upload CV";
           badge.classList.toggle("is-empty", !data?.upload);
         }
 
         if (downloadBtn) {
-          downloadBtn.href = data?.upload ? downloadUrl : "resume/resume.html";
-          downloadBtn.toggleAttribute("download", Boolean(data?.upload));
-          downloadBtn.setAttribute(
-            "aria-label",
-            data?.upload ? "Download uploaded CV" : "Open CV score page"
-          );
+          downloadBtn.href = "resume/resume.html";
+          downloadBtn.removeAttribute("download");
+          downloadBtn.setAttribute("aria-label", "Open CV preview and ATS score page");
         }
         return;
       } catch (_error) {

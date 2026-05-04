@@ -1333,6 +1333,30 @@ app.get('/api/resume-upload/file', async (_req, res) => {
   }
 });
 
+app.get('/api/resume-upload/preview', async (_req, res) => {
+  try {
+    const rows = await q(
+      `SELECT file_name, mime_type, file_data
+       FROM resume_uploads
+       WHERE active = 1
+       ORDER BY id DESC
+       LIMIT 1`
+    );
+
+    if (!rows.length || !rows[0].file_data) {
+      return res.status(404).send('Resume file not found');
+    }
+
+    const safeFileName = cleanString(rows[0].file_name, 255) || 'resume.pdf';
+    res.setHeader('Content-Type', rows[0].mime_type || 'application/octet-stream');
+    res.setHeader('Content-Disposition', `inline; filename="${safeFileName.replace(/"/g, '')}"`);
+    res.setHeader('Cache-Control', 'no-store');
+    return res.send(rows[0].file_data);
+  } catch (_error) {
+    return res.status(500).send('Failed to preview resume');
+  }
+});
+
 app.post('/api/resume-upload', requireAdminAuth, async (req, res) => {
   try {
     const dataUrl = req.body?.dataUrl;

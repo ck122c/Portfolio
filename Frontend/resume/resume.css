@@ -232,6 +232,87 @@ body::before {
   box-shadow: none;
 }
 
+.cv-preview-card {
+  display: grid;
+  gap: 22px;
+  margin: 0 0 34px;
+  padding: 26px;
+  color: #eafffb;
+  background:
+    linear-gradient(145deg, rgba(8, 22, 31, 0.94), rgba(11, 31, 38, 0.9)),
+    radial-gradient(circle at 80% 10%, rgba(66, 165, 255, 0.18), transparent 34%);
+  border: 1px solid rgba(102, 255, 220, 0.28);
+  border-radius: 28px;
+  box-shadow:
+    0 22px 54px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.cv-preview-info h2 {
+  margin: 0 0 18px;
+  color: #ffffff;
+  font: 900 clamp(1.55rem, 4vw, 2.45rem)/1.05 Arial, sans-serif;
+  letter-spacing: -0.04em;
+}
+
+.cv-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.cv-meta-grid span {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: 14px;
+  color: rgba(234, 255, 251, 0.84);
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(102, 255, 220, 0.16);
+  border-radius: 18px;
+  font: 800 0.9rem/1.35 Arial, sans-serif;
+}
+
+.cv-meta-grid strong {
+  color: #66ffdc;
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cv-preview-frame {
+  width: 100%;
+  min-height: 680px;
+  border: 1px solid rgba(102, 255, 220, 0.24);
+  border-radius: 22px;
+  background: #ffffff;
+}
+
+.cv-preview-fallback {
+  display: grid;
+  gap: 10px;
+  min-height: 260px;
+  place-items: center;
+  text-align: center;
+  padding: 28px;
+  color: rgba(234, 255, 251, 0.8);
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px dashed rgba(102, 255, 220, 0.28);
+  border-radius: 22px;
+}
+
+.cv-preview-fallback strong {
+  color: #ffffff;
+  font: 900 1.2rem Arial, sans-serif;
+}
+
+.cv-preview-fallback p {
+  max-width: 560px;
+  margin: 0;
+  color: rgba(234, 255, 251, 0.72);
+  font: 700 0.96rem/1.55 Arial, sans-serif;
+}
+
 .resume-grid {
   display: grid;
   grid-template-columns: 0.76fr 1.24fr;
@@ -339,6 +420,18 @@ body::before {
 
   .ats-panel {
     padding: 24px;
+  }
+
+  .cv-preview-card {
+    padding: 22px;
+  }
+
+  .cv-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cv-preview-frame {
+    min-height: 520px;
   }
 }
 

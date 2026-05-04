@@ -103,10 +103,62 @@ function normalizeUpload(upload = null) {
   }
   return {
     file_name: String(upload.file_name || ""),
+    mime_type: String(upload.mime_type || ""),
+    byte_size: Number(upload.byte_size || 0),
     ats_score: Number(upload.ats_score || 0),
     ats_feedback: Array.isArray(feedback) ? feedback : [],
     download_url: String(upload.download_url || "/api/resume-upload/file")
   };
+}
+
+function formatFileSize(bytes = 0) {
+  const size = Number(bytes || 0);
+  if (!size) return "Size unavailable";
+  if (size < 1024 * 1024) return `${Math.max(1, Math.round(size / 1024))} KB`;
+  return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function getResumeType(upload = {}) {
+  const mime = String(upload.mime_type || "").toLowerCase();
+  const file = String(upload.file_name || "").toLowerCase();
+  if (mime.includes("pdf") || file.endsWith(".pdf")) return "ATS Friendly PDF Resume";
+  if (mime.includes("word") || file.endsWith(".doc") || file.endsWith(".docx")) return "Word Resume";
+  if (mime.includes("text") || file.endsWith(".txt")) return "Plain Text ATS Resume";
+  return "Uploaded Resume";
+}
+
+function getJobRole(resume = {}) {
+  const headline = String(resume.headline || "").trim();
+  if (!headline) return "Data / AI Role";
+  return headline.split("|").map((item) => item.trim()).filter(Boolean)[0] || headline;
+}
+
+function buildResumePreview(upload = null, resume = fallbackResume) {
+  const normalized = normalizeUpload(upload);
+  if (!normalized) return "";
+
+  const previewUrl = `${API_ROOT}/api/resume-upload/preview`;
+  const canPreviewInline = /pdf/i.test(normalized.mime_type) || /\.pdf$/i.test(normalized.file_name);
+
+  return `<section class="cv-preview-card">
+    <div class="cv-preview-info">
+      <span class="ats-kicker">CV Preview</span>
+      <h2>${escapeHtml(getResumeType(normalized))}</h2>
+      <div class="cv-meta-grid">
+        <span><strong>Job Role</strong>${escapeHtml(getJobRole(resume))}</span>
+        <span><strong>File Type</strong>${escapeHtml(getResumeType(normalized))}</span>
+        <span><strong>File Size</strong>${escapeHtml(formatFileSize(normalized.byte_size))}</span>
+      </div>
+    </div>
+    ${
+      canPreviewInline
+        ? `<iframe class="cv-preview-frame" src="${escapeHtml(previewUrl)}#toolbar=0" title="CV preview"></iframe>`
+        : `<div class="cv-preview-fallback">
+            <strong>Preview not available for this file type</strong>
+            <p>DOC/DOCX files browser me direct preview nahi hote. ATS score aur details upar dikh rahe hain; download button se file open kar sakte ho.</p>
+          </div>`
+    }
+  </section>`;
 }
 
 function renderAtsPanel(upload) {
@@ -189,6 +241,7 @@ function renderResume(resume, upload = fallbackUpload) {
     </header>
 
     ${renderAtsPanel(normalizeUpload(upload))}
+    ${buildResumePreview(upload, resume)}
 
     <div class="resume-grid">
       <aside>

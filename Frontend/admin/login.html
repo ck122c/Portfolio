@@ -364,11 +364,23 @@
     });
 
     document.getElementById("loginBackBtn").addEventListener("click", () => {
-      if (window.history.length > 1) {
-        window.history.back();
+      const returnUrl =
+        sessionStorage.getItem("admin_return_url") ||
+        localStorage.getItem("admin_return_url") ||
+        (document.referrer && !document.referrer.includes("/admin/") ? document.referrer : "") ||
+        "../index.html";
+
+      if (window.opener && !window.opener.closed) {
+        window.opener.location.href = returnUrl;
+        window.opener.focus();
+        window.close();
+        setTimeout(() => {
+          window.location.replace(returnUrl);
+        }, 250);
         return;
       }
-      window.location.href = "../index.html";
+
+      window.location.replace(returnUrl);
     });
 
     function setLoading(isLoading) {
