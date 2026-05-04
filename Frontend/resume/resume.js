@@ -21,6 +21,8 @@ const fallbackResume = {
 };
 
 const fallbackUpload = null;
+const downloadButton = document.getElementById("downloadCvFileBtn");
+let activeDownloadUrl = "";
 
 function escapeHtml(value) {
   return String(value || "")
@@ -109,11 +111,17 @@ function normalizeUpload(upload = null) {
 
 function renderAtsPanel(upload) {
   if (!upload) {
+    updateDownloadButton(null);
     return `<section class="ats-panel">
-      <div>
-        <span class="ats-kicker">ATS CV</span>
-        <h2>No uploaded resume yet</h2>
-        <p>Admin panel se PDF/DOCX resume upload karo, yahan score aur improvement tips dikh jayenge.</p>
+      <div class="ats-score-wrap">
+        <span class="ats-kicker">Download CV</span>
+        <strong>--<small>/100</small></strong>
+        <p>No uploaded CV found</p>
+      </div>
+      <div class="ats-tips">
+        <h2>Upload CV from Admin</h2>
+        <p>Admin panel se ATS friendly PDF/DOCX/TXT resume upload karo. Upload ke baad yahan score, tips, aur direct download button show hoga.</p>
+        <a href="../admin/login.html" class="download-uploaded-btn muted-action">Open Admin</a>
       </div>
     </section>`;
   }
@@ -125,19 +133,39 @@ function renderAtsPanel(upload) {
   const downloadUrl = /^https?:\/\//i.test(upload.download_url)
     ? upload.download_url
     : `${API_ROOT}${upload.download_url || "/api/resume-upload/file"}`;
+  updateDownloadButton(downloadUrl, upload.file_name || "CV");
 
   return `<section class="ats-panel">
     <div class="ats-score-wrap">
-      <span class="ats-kicker">Uploaded CV Score</span>
+      <span class="ats-kicker">Download Ready</span>
       <strong>${score}<small>/100</small></strong>
       <p>${escapeHtml(upload.file_name || "Uploaded resume")}</p>
     </div>
     <div class="ats-tips">
-      <h2>How to improve score</h2>
+      <h2>Your CV is ready</h2>
+      <p class="ats-download-copy">Admin uploaded CV is connected to this page. Use the button below to download the exact uploaded file.</p>
       <ul>${tips.map((tip) => `<li>${escapeHtml(tip)}</li>`).join("")}</ul>
-      <a href="${escapeHtml(downloadUrl)}" class="download-uploaded-btn">Download Uploaded CV</a>
+      <a href="${escapeHtml(downloadUrl)}" class="download-uploaded-btn" download>Download Uploaded CV</a>
     </div>
   </section>`;
+}
+
+function updateDownloadButton(downloadUrl, fileName = "CV") {
+  activeDownloadUrl = downloadUrl || "";
+  if (!downloadButton) return;
+
+  if (!activeDownloadUrl) {
+    downloadButton.href = "#";
+    downloadButton.textContent = "Upload CV First";
+    downloadButton.classList.add("is-disabled");
+    downloadButton.removeAttribute("download");
+    return;
+  }
+
+  downloadButton.href = activeDownloadUrl;
+  downloadButton.textContent = "Download CV";
+  downloadButton.classList.remove("is-disabled");
+  downloadButton.setAttribute("download", fileName);
 }
 
 function renderResume(resume, upload = fallbackUpload) {
@@ -192,16 +220,21 @@ async function loadResume() {
   }
 }
 
-document.getElementById("downloadPdfBtn").addEventListener("click", () => {
-  window.print();
-});
+if (downloadButton) {
+  downloadButton.addEventListener("click", (event) => {
+    if (activeDownloadUrl) return;
+    event.preventDefault();
+    alert("Admin panel se pehle CV upload karo, phir yahan download active hoga.");
+  });
+}
 
-document.getElementById("resumeBackBtn").addEventListener("click", () => {
-  if (window.history.length > 1) {
+const resumeBackBtn = document.getElementById("resumeBackBtn");
+if (resumeBackBtn) {
+  resumeBackBtn.addEventListener("click", (event) => {
+    if (window.history.length <= 1) return;
+    event.preventDefault();
     window.history.back();
-    return;
-  }
-  window.location.href = "../index.html#about";
-});
+  });
+}
 
 loadResume();

@@ -1357,7 +1357,8 @@ function initContactLocationMap() {
      ----------------------------- */
   async function initResumeAtsBadge() {
     const badge = $("#resumeAtsMini");
-    if (!badge) return;
+    const downloadBtn = $("#downloadCvBtn");
+    if (!badge && !downloadBtn) return;
 
     const apiBaseCandidates = Array.from(new Set([
       typeof window.__API_BASE__ === "string" ? window.__API_BASE__ : "",
@@ -1371,16 +1372,34 @@ function initContactLocationMap() {
         if (!response.ok) throw new Error("Resume API failed");
         const data = await response.json();
         const score = Number(data?.upload?.ats_score || 0);
-        badge.innerText = data?.upload ? `ATS Score: ${score}/100` : "ATS Score: Upload CV";
-        badge.classList.toggle("is-empty", !data?.upload);
+        const uploadPath = data?.upload?.download_url || "";
+        const downloadUrl = /^https?:\/\//i.test(uploadPath)
+          ? uploadPath
+          : `${base}${uploadPath || "/resume/resume.html"}`;
+
+        if (badge) {
+          badge.innerText = data?.upload ? `ATS Score: ${score}/100` : "ATS Score: Upload CV";
+          badge.classList.toggle("is-empty", !data?.upload);
+        }
+
+        if (downloadBtn) {
+          downloadBtn.href = data?.upload ? downloadUrl : "resume/resume.html";
+          downloadBtn.toggleAttribute("download", Boolean(data?.upload));
+          downloadBtn.setAttribute(
+            "aria-label",
+            data?.upload ? "Download uploaded CV" : "Open CV score page"
+          );
+        }
         return;
       } catch (_error) {
         // Try next local backend URL.
       }
     }
 
-    badge.innerText = "ATS Score: Offline";
-    badge.classList.add("is-empty");
+    if (badge) {
+      badge.innerText = "ATS Score: Offline";
+      badge.classList.add("is-empty");
+    }
   }
 
   /* -----------------------------
