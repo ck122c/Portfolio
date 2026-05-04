@@ -1,0 +1,174 @@
+/* ================= PROJECT DETAIL PAGE ROOT SECTION ================= */
+:root {
+  --bg: #050b16;
+  --card: rgba(14, 22, 36, 0.86);
+  --line: rgba(22, 241, 217, 0.3);
+  --text: #e8f8ff;
+  --muted: #9ec9d3;
+  --accent: #16f1d9;
+  --accent-2: #22a8ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  background: #151b23;
+}
+
+/* ================= PROJECT DETAIL HEADER SECTION ================= */
+.project-detail-header {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 28px 20px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.project-detail-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+.project-detail-header h1 span {
+  color: var(--accent);
+}
+
+.back-btn {
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  position: absolute;
+  left: 20px;
+  top: 18px;
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 10px 22px rgba(22, 241, 217, 0.2);
+}
+
+/* ================= PROJECT DETAIL CARD SECTION ================= */
+.project-detail-main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.project-detail-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.34);
+}
+
+.project-hero-image {
+  display: block;
+  width: 100%;
+  height: clamp(200px, 40vw, 380px);
+  object-fit: cover;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-detail-body {
+  padding: 22px;
+}
+
+.project-detail-body h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.45rem, 2.6vw, 2rem);
+  line-height: 1.25;
+}
+
+.project-tech {
+  margin: 0 0 14px;
+  color: var(--accent);
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.project-description {
+  margin: 0 0 14px;
+  color: #9ec9d3;
+  line-height: 1.74;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.project-full-content {
+  margin: 0;
+  color: #d5ecf5;
+  line-height: 1.82;
+  font-size: 1rem;
+  white-space: pre-wrap;
+}
+
+.project-actions {
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.project-action-btn {
+  text-decoration: none;
+  color: #001a17;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.project-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(34, 168, 255, 0.35);
+}
+
+.project-action-btn.ghost {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+}
+
+/* ================= PROJECT DETAIL RESPONSIVE SECTION ================= */
+@media (max-width: 1000px) {
+  .project-detail-header { padding: 20px 16px 8px; }
+  .project-detail-main { padding: 18px; }
+}
+
+@media (max-width: 700px) {
+  .project-detail-header { padding-top: 62px; }
+  .back-btn {
+    left: 14px;
+    top: 14px;
+  }
+  .project-detail-body { padding: 18px; }
+  .project-description { font-size: 0.96rem; }
+}
+
+@media (max-width: 480px) {
+  .project-detail-header h1 { font-size: 1.25rem; }
+  .project-hero-image { height: clamp(160px, 35vw, 260px); }
+  .project-detail-body { padding: 12px; }
+}

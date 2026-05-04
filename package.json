@@ -1,0 +1,14 @@
+{
+  "name": "portfolio-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=20 <25",
+    "npm": ">=10"
+  },
+  "scripts": {
+    "start": "npm --prefix Backend start",
+    "backend": "npm --prefix Backend start",
+    "render-build": "npm --prefix Backend ci"
+  }
+}

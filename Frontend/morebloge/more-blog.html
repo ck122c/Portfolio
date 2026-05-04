@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>More Blogs | Chandan Kumar Portfolio</title>
+  <meta name="description" content="Read all published blogs by Chandan Kumar on AI, data analytics, and technology." />
+  <link rel="stylesheet" href="more-blog.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+  <div id="particles-js" class="particles"></div>
+
+  <a class="back-btn" href="../index.html#blog">
+    <i class="fas fa-arrow-left"></i> Back
+  </a>
+
+  <header class="blogs-header">
+    <h1>More <span>Blogs</span></h1>
+    <p>Explore all published blogs. New blogs from the admin panel appear here automatically.</p>
+  </header>
+
+  <main class="blogs-main">
+    <div class="search-wrap">
+      <input type="search" id="allBlogsSearch" class="search-input" placeholder="Search all blogs..." />
+    </div>
+    <p class="blogs-meta" id="blogsMeta">0 blogs</p>
+
+    <section class="blogs-grid" id="allBlogsGrid"></section>
+  </main>
+
+  <script>
+    window.__API_BASE__ = window.location.protocol === "file:" ? "http://localhost:5001" : window.location.origin;
+  </script>
+  <script src="blog-data.js"></script>
+  <script src="more-blog.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    if (window.particlesJS) {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 60, density: { enable: true, value_area: 800 } },
+          color: { value: '#00d9ff' },
+          shape: { type: 'circle' },
+          opacity: { value: 0.5, random: true },
+          size: { value: 3, random: true },
+          line_linked: { enable: true, distance: 150, color: '#00d9ff', opacity: 0.35, width: 1 },
+          move: { enable: true, speed: 2 }
+        },
+        interactivity: {
+          detect_on: 'canvas',
+          events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+          modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
+        },
+        retina_detect: true
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download CV</title>
+  <link rel="stylesheet" href="resume.css" />
+</head>
+<body>
+  <!-- Resume toolbar: hidden automatically when printing/downloading PDF. -->
+  <header class="resume-toolbar">
+    <a href="../index.html#about" class="ghost-btn">Back</a>
+    <button type="button" class="download-btn" id="downloadPdfBtn">Download PDF</button>
+  </header>
+
+  <!-- Resume page: content is loaded from SQL through /api/resume. -->
+  <main class="resume-shell">
+    <section class="resume-page" id="resumePage">
+      <div class="resume-loading">Loading resume...</div>
+    </section>
+  </main>
+
+  <script src="resume.js"></script>
+</body>
+</html>

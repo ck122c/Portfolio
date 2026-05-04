@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>More Projects | Chandan Kumar Portfolio</title>
+  <meta name="description" content="Browse all projects by Chandan Kumar including AI, web development, and data analytics work." />
+  <link rel="stylesheet" href="more-projects.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+  <div id="particles-js" class="particles"></div>
+
+  <!-- Back Button -->
+  <a class="back-btn" href="../index.html#projects"><i class="fas fa-arrow-left"></i> Back</a>
+
+  <!-- ================= MORE PROJECTS PAGE HEADER ================= -->
+  <header class="projects-header">
+    <h1>More <span>Projects</span></h1>
+    <p>You can see the particular project type by selecting the category..</p>
+  </header>
+
+  <main class="projects-main">
+    <!-- ================= MORE PROJECTS FILTER TABS ================= -->
+    <div class="filter-tabs" id="allProjectsFilterTabs">
+      <button class="filter-btn active" data-filter="all">More Project</button>
+      <button class="filter-btn" data-filter="ai">AI</button>
+      <button class="filter-btn" data-filter="web">Web Development</button>
+      <button class="filter-btn" data-filter="viz">Data Analyst</button>
+    </div>
+    <div class="search-wrap">
+      <input type="search" id="allProjectsSearch" class="search-input" placeholder="Search all projects..." />
+    </div>
+
+    <!-- ================= MORE PROJECTS META ================= -->
+    <p class="projects-meta" id="projectsMeta">0 projects</p>
+
+    <!-- ================= MORE PROJECTS GRID ================= -->
+    <section class="projects-grid" id="allProjectsGrid"></section>
+  </main>
+
+  <!-- ================= SHARED PROJECT DATA ================= -->
+  <script src="projects-data.js"></script>
+
+  <!-- ================= PAGE LOGIC (ONLY ALL PROJECTS PAGE) ================= -->
+  <script>
+    window.__API_BASE__ = window.location.protocol === "file:" ? "http://localhost:5001" : window.location.origin;
+  </script>
+  <script src="more-projects.js"></script>
+  <!-- Particles.js (homepage background) -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    if (window.particlesJS) {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 60, density: { enable: true, value_area: 800 } },
+          color: { value: '#00d9ff' },
+          shape: { type: 'circle' },
+          opacity: { value: 0.5, random: true },
+          size: { value: 3, random: true },
+          line_linked: { enable: true, distance: 150, color: '#00d9ff', opacity: 0.35, width: 1 },
+          move: { enable: true, speed: 2 }
+        },
+        interactivity: {
+          detect_on: 'canvas',
+          events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+          modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
+        },
+        retina_detect: true
+      });
+    }
+  </script>
+</body>
+</html>

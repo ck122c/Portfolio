@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Control Center</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="scanline"></div>
+
+<div class="topbar">
+  <div>
+    <span class="status-badge">SECURE MODE</span>
+    <span class="topbar-meta">SYSTEM: DB_SYNC_ACTIVE</span>
+  </div>
+  <h2 class="topbar-title">Admin <span>Control Center</span></h2>
+  <div>
+    <button class="btn-refresh" onclick="loadDashboardData()">Refresh</button>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<!-- ================= DASHBOARD STATS SECTION ================= -->
+<div class="cards">
+  <div class="card">
+    <h3>Total Contacts</h3>
+    <h1 id="contactCount">0</h1>
+    <small>Sync: <span id="time">00:00:00</span></small>
+  </div>
+  <div class="card">
+    <h3>Total Reviews</h3>
+    <h1 id="reviewCount">0</h1>
+    <small>Integrity: 100%</small>
+  </div>
+  <div class="card">
+    <h3>Total Projects</h3>
+    <h1 id="projectCount">0</h1>
+    <small>Admin managed</small>
+  </div>
+  <div class="card">
+    <h3>Total Blogs</h3>
+    <h1 id="blogCount">0</h1>
+    <small>Admin managed</small>
+  </div>
+  <div class="card">
+    <h3>Total Visitors</h3>
+    <h1 id="visitCount">0</h1>
+    <small>Real-time traffic</small>
+  </div>
+  <div class="card">
+    <h3>Total Time Spent</h3>
+    <h1 id="timeSpent">0 sec</h1>
+    <small>User engagement</small>
+  </div>
+</div>
+
+<!-- ================= ACCESS SELECTOR SECTION ================= -->
+<div class="access-panel">
+  <div class="table-header">Choose Admin Access</div>
+  <p id="accessStatus" class="access-status">Select one module to open its access panel.</p>
+  <div class="access-buttons">
+    <button type="button" class="access-btn" data-admin-target="contacts">Contact Access</button>
+    <button type="button" class="access-btn" data-admin-target="reviews">Review Access</button>
+    <button type="button" class="access-btn" data-admin-target="projects">Project Access</button>
+    <button type="button" class="access-btn" data-admin-target="blogs">Blog Access</button>
+    <button type="button" class="access-btn" data-admin-target="about">About Access</button>
+    <button type="button" class="access-btn" data-admin-target="resume">Resume Access</button>
+  </div>
+</div>
+
+<!-- ================= CONTACT TABLE SECTION ================= -->
+<div class="table-section admin-section" data-admin-module="contacts">
+  <div class="table-header">Contact Messages</div>
+
+  <!-- ================= CONTACT LOCATION SETTINGS SECTION ================= -->
+  <form id="contactSettingsForm" class="admin-form">
+    <h3 class="form-title">Update Contact Location & Map</h3>
+    <div class="manager-grid">
+      <input type="text" id="contact-location-input" placeholder="Location Text (e.g. Indore, India)" maxlength="160" required />
+      <input type="text" id="contact-map-input" placeholder="Google Map Embed URL or iframe code" maxlength="1200" />
+    </div>
+    <button type="submit" class="submit-btn">Save Contact Location</button>
+    <p class="status-line" id="contactSettingsStatus"></p>
+
+    <div class="contact-map-preview-wrap">
+      <p class="upload-hint">Map Preview</p>
+      <iframe id="contactMapPreview" title="Contact map preview" loading="lazy"></iframe>
+    </div>
+  </form>
+
+  <div class="table-container">
+    <table id="contactTable"></table>
+  </div>
+</div>
+
+<!-- ================= REVIEW TABLE SECTION ================= -->
+<div class="table-section admin-section" data-admin-module="reviews">
+  <div class="table-header">Reviews Management</div>
+  <div class="table-container">
+    <table id="reviewTable"></table>
+  </div>
+</div>
+
+<!-- ================= PROJECT MANAGER FORM SECTION ================= -->
+<div class="table-section admin-section" data-admin-module="projects">
+  <div class="table-header">Project Manager</div>
+  <form id="projectForm" class="admin-form">
+    <h3 class="form-title">Add / Update Project</h3>
+
+    <div class="manager-grid">
+      <select id="project-category" required>
+        <option value="ai">AI</option>
+        <option value="web">Web Development</option>
+        <option value="viz">Data Analyst</option>
+      </select>
+      <input type="text" id="project-category-label" placeholder="Category Label (e.g. AI)" maxlength="60" />
+      <input type="text" id="project-title" placeholder="Project Title" maxlength="180" required />
+      <input type="text" id="project-tech" placeholder="Tech Stack (e.g. HTML, CSS, JS)" maxlength="220" />
+      <input type="text" id="project-image" placeholder="Image Path or URL" maxlength="500" />
+      <input type="hidden" id="project-image-id" />
+      <input type="number" id="project-order" placeholder="Display Order" min="0" step="1" value="0" />
+      <input type="text" id="project-live" placeholder="Live Demo URL or Path" maxlength="500" />
+      <input type="text" id="project-github" placeholder="GitHub URL" maxlength="500" />
+      <input type="text" id="project-linkedin" placeholder="LinkedIn URL" maxlength="500" />
+      <input type="text" id="project-video" placeholder="Video URL" maxlength="500" />
+      <input type="text" id="project-extra-label" placeholder="Extra Link Label" maxlength="80" />
+      <input type="text" id="project-extra-url" placeholder="Extra Link URL or Path" maxlength="500" />
+    </div>
+
+    <div class="upload-row">
+      <input type="file" id="project-image-file" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" />
+      <button type="button" class="reset-btn" onclick="clearProjectImageSelection()">Clear Image</button>
+    </div>
+    <p class="upload-hint">Choose an image file. On submit, the image will be saved to the SQL database (max 5MB).</p>
+    <p class="upload-meta" id="projectImageMeta"></p>
+
+    <textarea id="project-description" placeholder="Project Summary" maxlength="2000" required></textarea>
+    <textarea id="project-content" placeholder="Project Full Content (optional)" maxlength="10000"></textarea>
+
+    <div class="inline-row">
+      <label><input type="checkbox" id="project-featured" checked /> Show on Home Featured</label>
+      <span>Note: The homepage displays one featured project from each category.</span>
+    </div>
+
+    <button type="submit" class="submit-btn" id="projectSubmitBtn">Add Project</button>
+    <button type="button" class="reset-btn" onclick="resetProjectForm()">Reset</button>
+    <p class="status-line" id="projectStatus"></p>
+  </form>
+
+  <div class="table-container">
+    <table id="projectTable"></table>
+  </div>
+</div>
+
+<!-- ================= BLOG MANAGER FORM SECTION ================= -->
+<div class="table-section admin-section" data-admin-module="blogs">
+  <div class="table-header">Blog Manager</div>
+  <form id="blogForm" class="admin-form">
+    <h3 class="form-title">Add / Update Blog</h3>
+
+    <div class="manager-grid">
+      <input type="text" id="blog-title" placeholder="Blog Title" maxlength="200" required />
+      <input type="text" id="blog-image" placeholder="Image Path or URL" maxlength="500" />
+      <input type="hidden" id="blog-image-id" />
+      <input type="text" id="blog-read-more" placeholder="Source / Reference URL (optional)" maxlength="500" />
+      <input type="text" id="blog-github" placeholder="GitHub URL" maxlength="500" />
+      <input type="text" id="blog-linkedin" placeholder="LinkedIn URL" maxlength="500" />
+      <input type="text" id="blog-video" placeholder="Video URL" maxlength="500" />
+      <input type="number" id="blog-order" placeholder="Display Order" min="0" step="1" value="0" />
+      <input type="text" id="blog-extra-label" placeholder="Extra Link Label" maxlength="80" />
+      <input type="text" id="blog-extra-url" placeholder="Extra Link URL or Path" maxlength="500" />
+    </div>
+
+    <div class="upload-row">
+      <input type="file" id="blog-image-file" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" />
+      <button type="button" class="reset-btn" onclick="clearBlogImageSelection()">Clear Image</button>
+    </div>
+    <p class="upload-hint">Choose an image file. On submit, the image will be saved to the SQL database (max 5MB).</p>
+    <p class="upload-meta" id="blogImageMeta"></p>
+
+    <textarea id="blog-summary" placeholder="Blog Summary" maxlength="2000" required></textarea>
+    <textarea id="blog-content" placeholder="Blog Full Content (optional)" maxlength="10000"></textarea>
+
+    <div class="inline-row">
+      <label><input type="checkbox" id="blog-published" checked /> Publish on Frontend</label>
+    </div>
+
+    <button type="submit" class="submit-btn" id="blogSubmitBtn">Add Blog</button>
+    <button type="button" class="reset-btn" onclick="resetBlogForm()">Reset</button>
+    <p class="status-line" id="blogStatus"></p>
+  </form>
+
+  <div class="table-container">
+    <table id="blogTable"></table>
+  </div>
+</div>
+
+<!-- ================= ABOUT + EXPERIENCE MANAGER SECTION ================= -->
+<div class="table-section admin-section" data-admin-module="about">
+  <div class="table-header">About & Experience Manager</div>
+
+  <form id="aboutContentForm" class="admin-form">
+    <h3 class="form-title">Update About Content</h3>
+
+    <div class="manager-grid">
+      <input type="text" id="about-tagline-input" placeholder="Tagline (e.g. Data Scientist | AI Enthusiast)" maxlength="220" required />
+      <input type="text" id="about-headline-input" placeholder="About Headline" maxlength="220" required />
+      <input type="text" id="about-exp-summary-input" placeholder="Experience Summary (e.g. 2+ Years Experience)" maxlength="160" required />
+    </div>
+
+    <textarea id="about-p1-input" placeholder="About Paragraph 1" maxlength="3000" required></textarea>
+    <textarea id="about-p2-input" placeholder="About Paragraph 2 (optional)" maxlength="3000"></textarea>
+    <textarea id="about-p3-input" placeholder="About Paragraph 3 (optional)" maxlength="3000"></textarea>
+
+    <button type="submit" class="submit-btn" id="aboutContentSubmitBtn">Save About Content</button>
+    <p class="status-line" id="aboutContentStatus"></p>
+  </form>
+
+  <form id="experienceForm" class="admin-form">
+    <h3 class="form-title">Add / Update Experience Item</h3>
+
+    <div class="manager-grid">
+      <input type="text" id="exp-year-input" placeholder="Year (e.g. 2025 - Present)" maxlength="60" required />
+      <input type="text" id="exp-company-input" placeholder="Company Name" maxlength="160" required />
+      <input type="text" id="exp-role-input" placeholder="Job Role" maxlength="160" required />
+      <input type="text" id="exp-position-input" placeholder="Position / Designation" maxlength="160" required />
+      <input type="number" id="exp-order-input" placeholder="Display Order" min="0" step="1" value="0" />
+    </div>
+
+    <textarea id="exp-description-input" placeholder="Experience Description (optional)" maxlength="1200"></textarea>
+
+    <button type="submit" class="submit-btn" id="experienceSubmitBtn">Add Experience</button>
+    <button type="button" class="reset-btn" onclick="resetExperienceForm()">Reset</button>
+    <p class="status-line" id="experienceStatus"></p>
+  </form>
+
+  <div class="table-container">
+    <table id="aboutExperienceTable"></table>
+  </div>
+</div>
+
+<!-- ================= RESUME UPLOAD + ATS SCORE SECTION ================= -->
+<div class="table-section admin-section" data-admin-module="resume">
+  <div class="table-header">Resume Upload & ATS Score</div>
+
+  <form id="resumeUploadForm" class="admin-form">
+    <h3 class="form-title">Upload ATS Friendly Resume</h3>
+
+    <div class="upload-row">
+      <input type="file" id="resume-file" accept=".pdf,.doc,.docx,.txt,application/pdf,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+      <button type="button" class="reset-btn" onclick="clearResumeUploadSelection()">Clear File</button>
+    </div>
+    <p class="upload-hint">Upload PDF, DOC, DOCX, or TXT resume. For best ATS score, paste the resume text below before uploading.</p>
+    <p class="upload-meta" id="resumeUploadMeta">No resume uploaded</p>
+
+    <textarea id="resume-ats-text" placeholder="Paste resume text here for accurate ATS score. TXT files are read automatically." maxlength="30000"></textarea>
+
+    <button type="submit" class="submit-btn" id="resumeUploadSubmitBtn">Upload & Generate ATS Score</button>
+    <button type="button" class="reset-btn" onclick="deleteUploadedResume()">Remove Uploaded CV</button>
+    <a class="reset-btn" href="../resume/resume.html">View Score on Frontend</a>
+    <p class="status-line" id="resumeUploadStatus"></p>
+  </form>
+</div>
+
+<script src="dashboard.js"></script>
+
+</body>
+</html>

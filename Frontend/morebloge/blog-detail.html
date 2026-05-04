@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Detail | Chandan Kumar Portfolio</title>
+  <meta name="description" content="Read full blog details by Chandan Kumar on AI, data analytics, and development." />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="blog-detail.css" />
+</head>
+<body>
+  <!-- ================= BLOG DETAIL HEADER SECTION ================= -->
+  <header class="blog-detail-header">
+    <a href="../index.html#blog" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Blog</a>
+    <h1>Blog <span>Details</span></h1>
+  </header>
+
+  <!-- ================= BLOG DETAIL CONTENT SECTION ================= -->
+  <main class="blog-detail-main">
+    <article class="blog-detail-card" id="blogDetailCard">
+      <img id="blogHeroImage" class="blog-hero-image" src="../image/Portfolio UI.png" alt="Blog" loading="lazy" />
+
+      <div class="blog-detail-body">
+        <h2 id="blogTitle">Loading blog...</h2>
+        <p id="blogSummary" class="blog-summary"></p>
+
+        <div id="blogContent" class="blog-content-text"></div>
+
+        <div id="blogActions" class="blog-actions"></div>
+      </div>
+    </article>
+  </main>
+
+  <!-- ================= BLOG DETAIL SCRIPT SECTION ================= -->
+  <script>
+    window.__API_BASE__ = window.location.protocol === "file:" ? "http://localhost:5001" : window.location.origin;
+  </script>
+  <script src="blog-detail.js"></script>
+</body>
+</html>

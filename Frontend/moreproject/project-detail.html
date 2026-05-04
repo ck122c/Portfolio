@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Detail | Chandan Kumar Portfolio</title>
+  <meta name="description" content="Project details, tech stack, and links for Chandan Kumar portfolio projects." />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="project-detail.css" />
+</head>
+<body>
+  <!-- ================= PROJECT DETAIL HEADER SECTION ================= -->
+  <header class="project-detail-header">
+    <a href="../index.html#projects" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+    <h1>Project <span>Details</span></h1>
+  </header>
+
+  <!-- ================= PROJECT DETAIL CONTENT SECTION ================= -->
+  <main class="project-detail-main">
+    <article class="project-detail-card">
+      <img id="projectHeroImage" class="project-hero-image" src="../image/Portfolio UI.png" alt="Project" loading="lazy" />
+
+      <div class="project-detail-body">
+        <h2 id="projectTitle">Loading project...</h2>
+        <p id="projectTech" class="project-tech"></p>
+        <p id="projectDescription" class="project-description"></p>
+        <div id="projectContent" class="project-full-content"></div>
+
+        <div id="projectActions" class="project-actions"></div>
+      </div>
+    </article>
+  </main>
+
+  <!-- ================= PROJECT DETAIL SCRIPT SECTION ================= -->
+  <script>
+    window.__API_BASE__ = window.location.protocol === "file:" ? "http://localhost:5001" : window.location.origin;
+  </script>
+  <script src="project-detail.js"></script>
+</body>
+</html>

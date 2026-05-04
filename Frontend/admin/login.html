@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Access</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    :root {
+      --cyan: #66ffdc;
+      --blue: #42a5ff;
+      --panel: rgba(7, 18, 24, 0.88);
+      --line: rgba(102, 255, 220, 0.28);
+      --text: #effcff;
+      --muted: rgba(235, 248, 252, 0.68);
+      --danger: #ff5d6c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: var(--text);
+      background: #050b0e;
+      font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+    }
+
+    .login-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 52% 18%, rgba(102, 255, 220, 0.16), transparent 28%),
+        radial-gradient(circle at 80% 58%, rgba(255, 112, 72, 0.18), transparent 22%),
+        radial-gradient(circle at 18% 70%, rgba(66, 165, 255, 0.18), transparent 24%),
+        linear-gradient(145deg, #071014, #061015 42%, #030709);
+    }
+
+    .login-bg::before,
+    .login-bg::after {
+      content: "";
+      position: absolute;
+      width: 44vw;
+      height: 44vw;
+      min-width: 340px;
+      min-height: 340px;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.35;
+      animation: floatBlob 9s ease-in-out infinite alternate;
+    }
+
+    .login-bg::before {
+      left: 10%;
+      bottom: 4%;
+      background: rgba(55, 213, 255, 0.22);
+    }
+
+    .login-bg::after {
+      right: 12%;
+      top: 22%;
+      background: rgba(255, 151, 92, 0.22);
+      animation-delay: -2s;
+    }
+
+    @keyframes floatBlob {
+      from { transform: translate3d(-16px, 12px, 0) scale(1); }
+      to { transform: translate3d(18px, -18px, 0) scale(1.08); }
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.18;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(102, 255, 220, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(102, 255, 220, 0.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(circle at center, black, transparent 78%);
+    }
+
+    .login-card {
+      position: relative;
+      width: min(430px, 100%);
+      padding: 36px 34px 30px;
+      border-radius: 32px;
+      text-align: center;
+      background:
+        linear-gradient(145deg, rgba(8, 20, 27, 0.96), rgba(4, 14, 20, 0.96)),
+        radial-gradient(circle at 20% 0%, rgba(102, 255, 220, 0.18), transparent 38%);
+      border: 1px solid var(--line);
+      box-shadow:
+        0 36px 100px rgba(0, 0, 0, 0.58),
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+      backdrop-filter: blur(18px);
+      animation: cardIn 0.7s ease both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #eafffb;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: transform 0.24s ease, background 0.24s ease, border-color 0.24s ease;
+    }
+
+    .close-btn:hover {
+      transform: rotate(90deg) scale(1.06);
+      background: rgba(255, 93, 108, 0.18);
+      border-color: rgba(255, 93, 108, 0.5);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 8px 16px;
+      color: #071314;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.9rem, 7vw, 3rem);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+      text-align: center;
+    }
+
+    .subtitle {
+      margin: 0 auto 24px;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.7;
+      max-width: 34ch;
+      text-align: center;
+    }
+
+    .login-form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .input-box {
+      position: relative;
+    }
+
+    .input-box i {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--cyan);
+      font-size: 1.05rem;
+    }
+
+    .input-box input {
+      width: 100%;
+      min-height: 54px;
+      padding: 16px 18px 16px 52px;
+      border-radius: 18px;
+      color: #f3ffff;
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      outline: none;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: border-color 0.24s ease, background 0.24s ease, box-shadow 0.24s ease;
+    }
+
+    .input-box input::placeholder {
+      color: rgba(235, 248, 252, 0.42);
+    }
+
+    .input-box input:focus {
+      border-color: rgba(102, 255, 220, 0.65);
+      background: rgba(102, 255, 220, 0.08);
+      box-shadow: 0 0 0 4px rgba(102, 255, 220, 0.08);
+    }
+
+    .login-btn {
+      width: 100%;
+      min-height: 54px;
+      border: 0;
+      border-radius: 18px;
+      color: #061314;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.24s ease, box-shadow 0.24s ease, filter 0.24s ease;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 42px rgba(66, 165, 255, 0.24);
+      filter: saturate(1.08);
+    }
+
+    .login-btn:disabled {
+      cursor: wait;
+      opacity: 0.75;
+      transform: none;
+    }
+
+    .helper-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: rgba(235, 248, 252, 0.5);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    #error {
+      min-height: 22px;
+      margin: 2px 0 0;
+      color: var(--danger);
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .login-footer {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(235, 248, 252, 0.42);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      text-align: center;
+    }
+
+    .shake {
+      animation: shakeEffect 0.42s ease;
+    }
+
+    @keyframes shakeEffect {
+      0%, 100% { transform: translateX(0); }
+      22% { transform: translateX(-9px); }
+      44% { transform: translateX(9px); }
+      66% { transform: translateX(-6px); }
+      88% { transform: translateX(6px); }
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 14px;
+      }
+
+      .login-card {
+        padding: 34px 22px 26px;
+        border-radius: 26px;
+      }
+
+      .close-btn {
+        top: 14px;
+        right: 14px;
+      }
+
+      .subtitle {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-bg"></div>
+  <div class="noise"></div>
+
+  <main class="login-card" id="loginCard">
+    <button type="button" class="close-btn" id="loginBackBtn" aria-label="Back to portfolio">
+      <i class="fas fa-xmark"></i>
+    </button>
+
+    <span class="status-pill">
+      <i class="fas fa-shield-halved"></i>
+      Secure Admin
+    </span>
+
+    <h1>Admin Access</h1>
+    <p class="subtitle">Enter your private access key to unlock the control center.</p>
+
+    <form class="login-form" id="loginForm">
+      <label class="input-box" for="password">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="password" placeholder="Enter Access Key" autocomplete="current-password" required />
+      </label>
+
+      <div class="helper-row">
+        <span>Encrypted Gate</span>
+        <span>DB Sync Ready</span>
+      </div>
+
+      <button type="submit" class="login-btn" id="loginBtn">
+        <span id="btnText">Authorized Entry</span>
+      </button>
+
+      <p id="error"></p>
+    </form>
+
+    <div class="login-footer">
+      2026 Secure Terminal v3.0<br />
+      Admin Control Center
+    </div>
+  </main>
+
+  <script>
+    const ADMIN_TOKEN_KEY = "admin_token";
+    const ADMIN_TOKEN_EXP_KEY = "admin_token_exp";
+    const loginForm = document.getElementById("loginForm");
+    const loginBtn = document.getElementById("loginBtn");
+    const btnText = document.getElementById("btnText");
+    const passwordInput = document.getElementById("password");
+    const errorElement = document.getElementById("error");
+    const card = document.getElementById("loginCard");
+    const API_ROOT = window.location.protocol === "file:" ? "http://localhost:5001" : window.location.origin;
+
+    (function rememberReturnUrl() {
+      const existingReturn = sessionStorage.getItem("admin_return_url");
+      const referrer = String(document.referrer || "");
+      if (!existingReturn && referrer && !referrer.includes("/admin/")) {
+        sessionStorage.setItem("admin_return_url", referrer);
+      }
+    })();
+
+    loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      login();
+    });
+
+    document.getElementById("loginBackBtn").addEventListener("click", () => {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+      window.location.href = "../index.html";
+    });
+
+    function setLoading(isLoading) {
+      loginBtn.disabled = isLoading;
+      btnText.innerText = isLoading ? "Verifying Access..." : "Authorized Entry";
+    }
+
+    function showError(message) {
+      errorElement.innerText = message;
+      card.classList.add("shake");
+      setTimeout(() => card.classList.remove("shake"), 430);
+    }
+
+    function normalizeAdminPassword(value) {
+      return String(value || "")
+        .normalize("NFKC")
+        .replace(/[\u200B-\u200D\uFEFF]/g, "")
+        .replace(/\s+/g, "")
+        .toLowerCase()
+        .trim();
+    }
+
+    async function login() {
+      const password = normalizeAdminPassword(passwordInput.value);
+      errorElement.innerText = "";
+
+      if (!password) {
+        showError("Please enter your access key.");
+        passwordInput.focus();
+        return;
+      }
+
+      try {
+        setLoading(true);
+
+        const response = await fetch(`${API_ROOT}/api/admin/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password })
+        });
+
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || "Invalid administrator key.");
+        }
+
+        if (data.token) {
+          localStorage.setItem(ADMIN_TOKEN_KEY, data.token);
+        }
+        if (data.expiresAt) {
+          localStorage.setItem(ADMIN_TOKEN_EXP_KEY, String(data.expiresAt));
+        }
+
+        btnText.innerText = "Access Granted";
+        const returnUrl =
+          sessionStorage.getItem("admin_return_url") ||
+          localStorage.getItem("admin_return_url") ||
+          "../index.html";
+        localStorage.setItem("admin_return_url", returnUrl);
+        window.location.href = "dashboard.html";
+      } catch (error) {
+        showError(error.message || "Connection refused. Start backend server first.");
+        setLoading(false);
+      }
+    }
+  </script>
+</body>
+</html>

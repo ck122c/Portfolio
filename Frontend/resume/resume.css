@@ -1,0 +1,332 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: #d9f7f4;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(0, 255, 204, 0.16), transparent 30%),
+    radial-gradient(circle at 85% 20%, rgba(82, 198, 255, 0.12), transparent 28%),
+    linear-gradient(145deg, #071017, #101923 52%, #061113);
+  font-family: "Courier New", monospace;
+}
+
+.resume-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 18px 0;
+  backdrop-filter: blur(16px);
+}
+
+.ghost-btn,
+.download-btn {
+  border: 1px solid rgba(102, 255, 220, 0.45);
+  border-radius: 999px;
+  padding: 13px 22px;
+  color: #dffefa;
+  background: rgba(6, 16, 22, 0.76);
+  font: 800 0.92rem "Courier New", monospace;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.24);
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.download-btn {
+  color: #061314;
+  border-color: transparent;
+  background: linear-gradient(135deg, #66ffdc, #42a5ff);
+}
+
+.ghost-btn:hover,
+.download-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(102, 255, 220, 0.85);
+}
+
+.resume-shell {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto 48px;
+}
+
+.resume-page {
+  position: relative;
+  overflow: hidden;
+  min-height: 1120px;
+  padding: 58px;
+  color: #122026;
+  background:
+    linear-gradient(90deg, rgba(9, 201, 177, 0.1), transparent 34%),
+    #f7fbfb;
+  border-radius: 28px;
+  border: 1px solid rgba(102, 255, 220, 0.34);
+  box-shadow:
+    0 28px 90px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+.resume-page::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 10px;
+  background: linear-gradient(90deg, #00ffcc, #4aa8ff, #ffd84d);
+}
+
+.resume-loading {
+  color: #1e3a3d;
+  font-weight: 800;
+}
+
+.resume-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  padding-bottom: 28px;
+  border-bottom: 2px solid rgba(7, 48, 52, 0.12);
+}
+
+.resume-name {
+  margin: 0;
+  color: #071719;
+  font: 900 clamp(2.3rem, 6vw, 4.1rem) Arial, sans-serif;
+  letter-spacing: -0.06em;
+}
+
+.resume-headline {
+  margin: 12px 0 0;
+  color: #0e9c89;
+  font: 900 1.2rem Arial, sans-serif;
+}
+
+.resume-contact {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  min-width: 250px;
+  color: #33484d;
+  font: 800 0.92rem Arial, sans-serif;
+  text-align: right;
+}
+
+.resume-contact a {
+  color: #087d72;
+  text-decoration: none;
+}
+
+.ats-panel {
+  display: grid;
+  grid-template-columns: 0.72fr 1.28fr;
+  gap: 24px;
+  margin: 30px 0 34px;
+  padding: 24px;
+  color: #eafffb;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(0, 255, 204, 0.28), transparent 36%),
+    linear-gradient(135deg, #071719, #102b30);
+  border-radius: 24px;
+  border: 1px solid rgba(0, 255, 204, 0.22);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);
+}
+
+.ats-kicker {
+  display: inline-flex;
+  margin-bottom: 10px;
+  color: #66ffdc;
+  font: 900 0.78rem Arial, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ats-score-wrap strong {
+  display: block;
+  color: #ffffff;
+  font: 900 clamp(3rem, 8vw, 5.2rem)/0.9 Arial, sans-serif;
+  letter-spacing: -0.07em;
+}
+
+.ats-score-wrap small {
+  color: #67ffdc;
+  font-size: 1.2rem;
+  letter-spacing: 0;
+}
+
+.ats-score-wrap p,
+.ats-panel p {
+  margin: 12px 0 0;
+  color: rgba(234, 255, 251, 0.76);
+  font: 700 0.98rem/1.55 Arial, sans-serif;
+}
+
+.ats-tips h2 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font: 900 1.25rem Arial, sans-serif;
+}
+
+.ats-tips ul {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 18px;
+  padding-left: 18px;
+}
+
+.ats-tips li {
+  color: rgba(234, 255, 251, 0.84);
+  font: 700 0.95rem/1.45 Arial, sans-serif;
+}
+
+.download-uploaded-btn {
+  display: inline-flex;
+  width: fit-content;
+  padding: 11px 16px;
+  color: #061314;
+  background: linear-gradient(135deg, #66ffdc, #42a5ff);
+  border-radius: 999px;
+  font: 900 0.86rem Arial, sans-serif;
+  text-decoration: none;
+}
+
+.resume-grid {
+  display: grid;
+  grid-template-columns: 0.76fr 1.24fr;
+  gap: 34px;
+  margin-top: 34px;
+}
+
+.resume-section {
+  break-inside: avoid;
+  margin-bottom: 28px;
+}
+
+.resume-section h2 {
+  display: inline-flex;
+  margin: 0 0 14px;
+  padding: 8px 14px;
+  color: #061314;
+  background: linear-gradient(135deg, rgba(0, 255, 204, 0.35), rgba(66, 165, 255, 0.22));
+  border-radius: 999px;
+  font: 900 0.84rem Arial, sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.resume-section p,
+.resume-rich {
+  margin: 0;
+  color: #26383d;
+  font: 600 1rem/1.75 Arial, sans-serif;
+  white-space: pre-wrap;
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.skill-list li {
+  padding: 9px 12px;
+  color: #074542;
+  background: rgba(0, 255, 204, 0.14);
+  border: 1px solid rgba(0, 140, 126, 0.16);
+  border-radius: 999px;
+  font: 800 0.88rem Arial, sans-serif;
+}
+
+.resume-block {
+  position: relative;
+  padding: 0 0 0 18px;
+  margin-bottom: 20px;
+  border-left: 3px solid rgba(0, 161, 146, 0.24);
+}
+
+.resume-block strong {
+  display: block;
+  color: #071719;
+  font: 900 1.05rem/1.55 Arial, sans-serif;
+}
+
+.resume-block span {
+  display: block;
+  margin-top: 6px;
+  color: #52656a;
+  font: 700 0.95rem/1.7 Arial, sans-serif;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 760px) {
+  .resume-toolbar,
+  .resume-shell {
+    width: min(100% - 20px, 620px);
+  }
+
+  .resume-page {
+    min-height: auto;
+    padding: 38px 24px;
+    border-radius: 22px;
+  }
+
+  .resume-head,
+  .resume-grid,
+  .ats-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .resume-contact {
+    min-width: 0;
+    text-align: left;
+  }
+
+  .resume-toolbar {
+    position: static;
+    flex-direction: column;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  body {
+    background: #ffffff;
+  }
+
+  .resume-toolbar {
+    display: none;
+  }
+
+  .ats-panel {
+    display: none;
+  }
+
+  .resume-shell {
+    width: 100%;
+    margin: 0;
+  }
+
+  .resume-page {
+    min-height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .resume-page::before {
+    display: none;
+  }
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Chatbot Project</title>
+  <style>
+    :root {
+      --bg: #151b23;
+      --card: #1c1c1d;
+      --text: #e6edf3;
+      --muted: #9fb2c5;
+      --accent: #00ffcc;
+      --accent-2: #00b8d9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Poppins, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 960px;
+      margin: 48px auto;
+      padding: 0 20px;
+      position: relative;
+    }
+    .top-back-btn {
+      display: inline-block;
+      margin-bottom: 14px;
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid rgba(0,255,204,0.35);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-weight: 700;
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+    .top-back-btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 20px rgba(0,255,204,0.2);
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+      display: block;
+    }
+    .content { padding: 24px; }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    p { color: var(--muted); line-height: 1.7; }
+    .tech { color: var(--accent); font-weight: 600; }
+    .actions { margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      text-decoration: none;
+      background: var(--accent);
+      color: #111;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      transition: background .2s ease;
+    }
+    .btn:hover { background: var(--accent-2); }
+    .btn.secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <a class="top-back-btn" href="../index.html#projects">&larr; Back to Projects</a>
+    <article class="card">
+      <img src="../image/AI UI.png" alt="AI chatbot project preview" />
+      <div class="content">
+        <h1>AI Chatbot</h1>
+        <p class="tech">Tech: Python, NLP</p>
+        <p>
+          Conversational AI chatbot concept focused on custom-dataset answers and user-friendly interaction flow.
+          This page is a live project detail placeholder so the portfolio link does not break.
+        </p>
+        <div class="actions">
+          <a class="btn secondary" href="https://github.com/ck122c" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

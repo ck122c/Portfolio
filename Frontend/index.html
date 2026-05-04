@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chandan Kumar</title>
+  <meta name="description" content="Portfolio of Chandan Kumar featuring AI projects, data analytics dashboards, web development work, and technical blogs." />
+  <meta name="keywords" content="Chandan Kumar, Portfolio, AI, Data Analyst, Web Development, Projects, Blogs" />
+  <meta name="author" content="Chandan Kumar" />
+  <meta property="og:title" content="Chandan Kumar Portfolio" />
+  <meta property="og:description" content="Explore AI, data analytics, and web development projects with detailed case studies and blogs." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="image/Portfolio UI.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Stylesheets -->
+   
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+ 
+
+  <!-- Font Awesome -->
+
+  <style>
+    /* Reserved for optional card tilt styles */
+    .about-card {
+      display: flex;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background animation -->
+<div id="tsparticles"></div>
+
+  <!-- ===== Header / Navbar Section ===== -->
+<header class="navbar">
+  <div class="logo circular">
+    <img src="image/gt24 tech.png" alt="GT24 TECH Logo" class="logo-img" />
+  </div>
+
+  <!-- Hamburger button (for mobile) -->
+  <div id="hamburger" class="hamburger">☰</div>
+
+  <nav class="nav-links" id="navLinks">
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#" class="btn" id="hireMeBtn">Hire Me</a></li>
+    </ul>
+  </nav>
+</header>
+
+  <!-- ===== Hero Section ===== -->
+<section class="hero" id="home">
+  <div class="container hero-container">
+    <!-- Left Side - Text Content -->
+    <div class="hero-text">
+      <h3>नमस्ते !</h3>
+      <h1>I'm <span class="highlight">Chandan Kumar</span></h1>
+      <h2><span id="typing-text"></span></h2>
+      <p>Turning data into insights | Building AI-powered solutions</p>
+      <div class="hero-buttons">
+        <a href="moreproject/more-projects.html" class="btn-primary">View My Work</a>
+        <a href="#contact" class="btn-secondary">Let's Connect</a>
+      </div>
+    </div>
+
+    <!-- Right Side - Profile Image -->
+    <!-- ===== Hero Image Section ===== -->
+<div class="hero-image">
+  <div class="profile-wrap" data-tilt>
+    <img src="image/3d.png" alt="Chandan Kumar Profile" class="profile-image">
+  </div>
+</div>
+
+</section>
+
+<!-- ===== About Section (Rebuilt - 3D + Admin Managed Experience) ===== -->
+<section class="about about-v3" id="about">
+  <div class="container">
+    <h2 class="section-title">About <span>Me</span></h2>
+
+    <div class="about-v3-layout">
+      <!-- Left: 3D Image -->
+      <div class="about-v3-media">
+        <div class="about-v3-image-wrap" data-tilt-touch="off">
+          <img src="image/ck.PNG.png" alt="Chandan Kumar" class="about-v3-image" />
+          <span class="about-v3-image-glow"></span>
+        </div>
+      </div>
+
+      <!-- Right: Content + Experience -->
+      <div class="about-v3-content">
+        <h3 id="aboutTagline">Data Scientist | AI Enthusiast | Problem Solver</h3>
+        <h4 id="aboutHeadline">Building data-driven products with real business impact</h4>
+        <p id="aboutParagraph1">Hi, I’m Chandan. I turn raw data into useful insights and practical solutions.</p>
+        <p id="aboutParagraph2">From analytics dashboards to AI workflows, I focus on clarity, performance, and measurable outcomes.</p>
+        <p id="aboutParagraph3">I enjoy solving real problems through technology and creating products people can actually use.</p>
+
+        <div class="about-v3-exp-block">
+          <div class="about-v3-exp-head">
+            <span class="about-v3-exp-label">Experience</span>
+            <span class="about-v3-exp-value" id="aboutExperienceSummary">1+ Years of Hands-on Experience</span>
+          </div>
+          <div class="about-v3-exp-grid" id="aboutExperienceList"></div>
+        </div>
+
+        <div class="social-links about-v3-social">
+          <a href="https://github.com/ck122c" class="social-icon"><i class="fab fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/chandankumar122c" class="social-icon"><i class="fab fa-linkedin"></i></a>
+          <a href="https://www.youtube.com/@GT24tech" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+
+        <a href="resume/resume.html" class="btn about-v3-btn">Download CV</a>
+        <span class="resume-ats-mini" id="resumeAtsMini">ATS Score: --</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====  MY Skills Section ===== -->
+
+<section class="skills" id="skills">
+  <div class="container">
+    <h2 class="section-title">My <span>Skills</span></h2>
+
+    <div class="skills-container">
+
+        <!-- Robotics -->
+
+      <div class="skill-category">
+        <h3><i class="fas fa-robot"></i> Robotics 80%</h3>
+        <div class="skill-item">
+          <span class="skill-name">Arduino / Raspberry Pi</span>
+          <div class="progress-bar"><div class="progress" data-progress="80"></div></div> 
+        </div>
+        <div class="skill-item">
+          <span class="skill-name">Electronics & Sensor</span>
+          <div class="progress-bar"><div class="progress" data-progress="75"></div></div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-name">ROS</span>
+          <div class="progress-bar"><div class="progress" data-progress="85"></div></div>
+        </div>
+      </div>
+      
+      <!--Data Analyst -->
+
+      <div class="skill-category">
+        <h3><i class="fas fa-chart-bar"></i> Data Analyst 90%</h3>
+        <div class="skill-item">
+          <span class="skill-name">Power BI</span>
+          <div class="progress-bar"><div class="progress" data-progress="87"></div></div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-name">Dashboard</span>
+          <div class="progress-bar"><div class="progress" data-progress="90"></div></div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-name">Excel</span>
+          <div class="progress-bar"><div class="progress" data-progress="80"></div></div>
+        </div>
+      </div>
+
+      <!-- Technical Skills -->
+       
+      <div class="skill-category">
+        <h3><i class="fas fa-code"></i> Technical Skills 85%</h3>
+        <div class="skill-item">
+          <span class="skill-name">Python With AI</span>
+          <div class="progress-bar"><div class="progress" data-progress="90"></div></div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-name">SQL</span>
+          <div class="progress-bar"><div class="progress" data-progress="85"></div></div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-name">Machine Learning</span>
+          <div class="progress-bar"><div class="progress" data-progress="85"></div></div>
+        </div>
+      </div>
+       
+
+      <!-- Web Development -->
+      <div class="skill-category">
+        <h3><i class="fas fa-laptop-code"></i> Web Development 80%</h3>
+        <div class="skill-item">
+          <span class="skill-name">HTML </span>
+          <div class="progress-bar"><div class="progress" data-progress="80"></div></div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-name">CSS</span>
+          <div class="progress-bar"><div class="progress" data-progress="75"></div></div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-name">JavaScript</span>
+          <div class="progress-bar"><div class="progress" data-progress="65"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====  MY Projects  ===== -->
+<section class="projects" id="projects">
+  <div class="container">
+    <h2 class="section-title">My <span>Projects</span></h2>
+
+    <!-- ================= HOME PROJECTS TAB SECTION ================= -->
+    <!-- `More Project` tab naya page open karega, baaki tabs featured cards filter karenge -->
+    <div class="filter-tabs">
+      <button class="filter-btn" data-filter="ai">AI</button>
+      <button class="filter-btn" data-filter="web">Web</button>
+      <button class="filter-btn" data-filter="viz">Data</button>
+      <a class="filter-btn all-projects-btn" href="moreproject/more-projects.html">More Project +</a>
+    </div>
+    <div class="section-search-wrap">
+      <input type="search" id="projectsSearchInput" class="section-search-input" placeholder="Search projects by title, tech, or keyword..." />
+    </div>
+
+    <!-- ================= HOME FEATURED PROJECTS GRID ================= -->
+    <!-- Is grid me har category ka ek featured project render hoga -->
+    <div class="projects-grid" id="featuredProjectsGrid"></div>
+  </div>
+</section>
+
+
+<!-- ===== Education & Experience Section ===== -->
+
+<!-- --------------------------------------------- -->
+<section class="education-experience" id="education-experience">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">My <span>Journey</span></h2>
+    </div>
+    
+    <div class="two-column-layout">
+      <!-- Left Column - Education -->
+      <div class="column education-column">
+        <div class="section-subtitle">
+          <i class="fas fa-graduation-cap"></i>
+          <h3>Education</h3>
+        </div>
+        
+        <div class="timeline">
+          <!-- Education Item 1 -->
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="timeline-content">
+              <h3>Master of Computer Applications (MCA)</h3>
+              <span class="timeline-date">2025 - 2027 | Sage University</span>
+              <p>Specialized in AI & Data Science (Sunstone) </p>
+            </div>
+          </div>
+
+          <!-- Education Item 2 -->
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <div class="timeline-content">
+              <h3>Bachelor of Computer Applications (BCA)</h3>
+              <span class="timeline-date">2021 - 2024 | MAHARAJA AGRASEN HIMALAYAN GARHWAL UNIVERSITY (MAHGU)</span>
+              <p>Specialization in AI & Data Analytics. </p>
+            </div>
+          </div>
+
+          <!-- Education Item 3 -->
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-school"></i>
+            </div>
+            <div class="timeline-content">
+              <h3>Diploma in Computer Application</h3>
+              <span class="timeline-date">2020 - 2021 | The Light Foundation</span>
+              <p>Specialization in ADCA. </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Experience & Achievements -->
+      <div class="column experience-column">
+        <div class="section-subtitle">
+          <i class="fas fa-briefcase"></i>
+          <h3>Experience & Achievements</h3>
+        </div>
+        
+        <div class="timeline">
+          <!-- Experience Item 1 -->
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="timeline-content">
+              <h3>Data Analyst</h3>
+              <span class="timeline-date">Dec 2024 - Aug 2025 | NullClass. Internship</span>
+              <p>Build Real Time Twitter Analytics Dashboard - Power BI</p>
+            </div>
+          </div>
+
+          <!-- Experience Item 2 -->
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="timeline-content">
+            <h3>Data Analyst, Virtual <h4>(freelance)</h4></h3>
+              <span class="timeline-date">May 2024 - Sep 2024 | Bigfaza IT Solutions</span>
+              <p>Developed Power BI dashboards, performed Python–SQL data analysis for actionable insights, and collaborated with teams to deliver tailored analytical solutions.</p>
+            </div>
+          </div>
+
+          <!-- Experience Item 3 -->
+         <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-certificate"></i>
+            </div>
+            <div class="timeline-content">
+              <h3>Employee Executive</h3>
+              <span class="timeline-date">May 2021 - Aug 2022 |tlfcomputerpcc-006, Madhubani</span>
+              <p>Managed accurate data entry, designed marketing graphics in Photoshop to boost brand visibility, and provided technical support to improve operational efficiency.</p>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Blog Section ===== -->
+<section class="blog" id="blog">
+  <div class="container">
+    <h2 class="section-title">My <span>Blog</span></h2>
+
+    <!-- ================= HOME BLOG ACTIONS ================= -->
+    <div class="blog-top-actions">
+      <button type="button" id="newBlogsBtn" class="filter-btn more-blog-btn active">New Blogs</button>
+      <a href="morebloge/more-blog.html" id="moreBlogsBtn" class="filter-btn more-blog-btn">More Blogs +</a>
+      <a href="#testimonials" class="filter-btn more-blog-btn">Write Review</a>
+    </div>
+    <div class="section-search-wrap">
+      <input type="search" id="blogSearchInput" class="section-search-input" placeholder="Search blogs by title or topic..." />
+    </div>
+    <!-- ================= DYNAMIC BLOG GRID SECTION ================= -->
+    <!-- Admin panel se add/update kiye blogs yahan same UI card me render honge -->
+    <div class="blog-grid" id="blogGrid"></div>
+  </div>
+</section>
+
+
+<!-- ===== what people say Section ===== -->
+<!-- ===== Testimonials Section ===== -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <h2 class="section-title">What <span>People Say</span></h2>
+
+    <div class="testimonial-slider" id="testimonialSlider"></div>
+
+    <!-- Slider Navigation -->
+    <div class="testimonial-nav" id="testimonialNav"></div>
+
+    <form class="review-form" id="review-form">
+      <h3>Write Your Review</h3>
+      <div class="review-form-grid">
+        <input type="text" id="review-name" placeholder="Your Name" required maxlength="60" />
+        <input type="text" id="review-role" placeholder="Role / Company (optional)" maxlength="80" />
+        <select id="review-rating" required>
+          <option value="5">5 Stars</option>
+          <option value="4">4 Stars</option>
+          <option value="3">3 Stars</option>
+          <option value="2">2 Stars</option>
+          <option value="1">1 Star</option>
+        </select>
+      </div>
+      <textarea id="review-text" rows="4" placeholder="Write your review..." required maxlength="500"></textarea>
+      <button type="submit" class="btn">Submit Review</button>
+      <p class="review-form-status" id="review-form-status"></p>
+    </form>
+  </div>
+</section>
+
+
+
+<!-- ===== Contact Section ===== -->
+<section class="contact" id="contact">
+  <div class="container">
+    <h2 class="section-title">Contact <span>Me</span></h2>
+    <p class="contact-subtitle">Let’s build something amazing together 🚀</p>
+
+    <div class="contact-content">
+      <!-- Contact Form -->
+      <form class="contact-form" id="contact-form">
+        <input type="text" id="name" placeholder="Your Name" required />
+        <input type="email" id="email" placeholder="Your Email" required />
+        <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
+      
+      </form>
+
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <h3>Let’s Connect</h3>
+        <p id="contactLocationText"><i class="fas fa-map-marker-alt"></i> Indore, India</p>
+
+        <!-- ================= CONTACT LOCATION MAP SECTION ================= -->
+        <div class="contact-map" id="contactMapCard">
+          <iframe
+            id="contactMapFrame"
+            src="https://www.google.com/maps?q=Indore%2C%20India&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Location Map">
+          </iframe>
+        </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== Hire Me Quick Action Modal ===== -->
+<div class="hire-modal" id="hireModal" aria-hidden="true">
+  <div class="hire-modal-backdrop" data-hire-close></div>
+  <div class="hire-modal-card" role="dialog" aria-modal="true" aria-labelledby="hireModalTitle">
+    <button type="button" class="hire-modal-close" data-hire-close aria-label="Close hire options">&times;</button>
+    <span class="hire-modal-kicker">Available for Projects</span>
+    <h3 id="hireModalTitle">Let’s work together</h3>
+    <p>Choose a quick action and send your project details. I’ll reply as soon as possible.</p>
+
+    <div class="hire-modal-actions">
+      <a class="hire-action whatsapp" href="https://wa.me/919065271001?text=Hi%20Chandan%2C%20I%20want%20to%20hire%20you%20for%20a%20project." target="_blank" rel="noopener">
+        <i class="fab fa-whatsapp"></i>
+        <span>
+          <strong>WhatsApp</strong>
+          <small>Fast project discussion</small>
+        </span>
+      </a>
+
+      <a class="hire-action email" href="mailto:chandankumar122c@gmail.com?subject=Project%20Hiring%20Request&body=Hi%20Chandan%2C%0A%0AI%20want%20to%20hire%20you%20for%20a%20project.%0A%0AProject%20Type%3A%0ABudget%3A%0ATimeline%3A%0ADetails%3A">
+        <i class="fas fa-envelope"></i>
+        <span>
+          <strong>Email</strong>
+          <small>Send full requirement</small>
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Footer Section ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+
+      <!-- Footer Links -->
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#projects">Projects</a>
+        <a href="#blog">My Blog</a>
+        <a href="#testimonials">What People Say</a>
+        <a href="admin/login.html" id="adminAccessLink" target="_blank">Admin</a>
+      </div>
+
+      <!-- Social Media -->
+      <div class="footer-social">
+        <a href="https://github.com/ck122c"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/chandankumar122c"><i class="fab fa-linkedin"></i></a>
+        <a href="https://www.facebook.com/share/1A5guVeELA/?mibextid=wwXIfr"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/zti_yadav_chandan" target="_blank"><i class="fab fa-instagram"></i></a>
+      </div>
+
+      <div class="visitor-card">
+        <div class="icon-box"><i class="fas fa-users"></i></div>
+
+        <div class="visitor-content">
+          <div class="visitor-title">Total Visitors:</div>
+          <div id="visitorCount" class="visitor-number">0</div>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <p class="footer-text">
+        Copyright &copy;2026 All rights reserved | This website is made with
+        <i class="fas fa-heart footer-heart"></i>
+        by <span class="footer-name">Chandan</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Scroll to Top Button -->
+  <button id="scrollToTopBtn"><i class="fas fa-arrow-up"></i></button>
+</footer>
+
+
+
+  <!-- ===== Scripts ===== -->
+  <script>
+    window.__API_BASE__ = window.location.protocol === "file:" ? "http://localhost:5001" : window.location.origin;
+  </script>
+  <!-- Particles.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <!-- ================= SHARED PROJECT DATA ================= -->
+  <script src="moreproject/projects-data.js"></script>
+  <!-- Custom JS -->
+  <script src="script.js"></script>
+  <!-- Add tilt.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tilt.js/1.2.1/tilt.jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Initialize Tilt.js -->
+  <script>
+    $(document).ready(function(){
+      const isTouchDevice = window.matchMedia && window.matchMedia("(hover: none), (pointer: coarse)").matches;
+      if (isTouchDevice) return;
+
+      $('.about-card').tilt({
+        scale: 1.02,
+        glare: true,
+        maxGlare: 0.1,
+        maxTilt: 5,
+        speed: 400,
+        perspective: 1000
+      });
+    });
+  </script>
+<!-- Background anamation -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+
+</body>
+</html>
