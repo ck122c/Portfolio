@@ -71,9 +71,12 @@ const MAIL_HOST = readStringEnv('MAIL_HOST', 'smtp.gmail.com');
 const MAIL_PORT = Number(readStringEnv('MAIL_PORT', '465')) || 465;
 const MAIL_SECURE = readBooleanEnv('MAIL_SECURE', true);
 const MAIL_FROM = readStringEnv('MAIL_FROM', MAIL_USER) || MAIL_USER;
+const ALERT_ON_CONTACT = readBooleanEnv('ALERT_ON_CONTACT', true);
+const ALERT_ON_REVIEW = readBooleanEnv('ALERT_ON_REVIEW', true);
 const ALERT_ON_VISIT = readBooleanEnv('ALERT_ON_VISIT', true);
+const ALERT_VISIT_THROTTLE_MINUTES = Number(readStringEnv('ALERT_VISIT_THROTTLE_MINUTES', '0')) || 0;
 const ALERT_VISIT_THROTTLE_MS =
-  (Number(readStringEnv('ALERT_VISIT_THROTTLE_MINUTES', '30')) || 30) * 60 * 1000;
+  Math.max(0, ALERT_VISIT_THROTTLE_MINUTES) * 60 * 1000;
 const PUBLIC_SITE_URL = cleanBaseUrl(readStringEnv('PUBLIC_SITE_URL', ''));
 
 app.set('trust proxy', 1);
@@ -299,7 +302,7 @@ function queueVisitEmailAlert(fields = {}) {
   if (!ALERT_ON_VISIT) return;
 
   const now = Date.now();
-  if (now - lastVisitAlertAt < ALERT_VISIT_THROTTLE_MS) return;
+  if (ALERT_VISIT_THROTTLE_MS > 0 && now - lastVisitAlertAt < ALERT_VISIT_THROTTLE_MS) return;
 
   lastVisitAlertAt = now;
   queueEmailAlert('New Website Activity', fields);
@@ -1462,13 +1465,15 @@ app.post('/api/contact', async (req, res) => {
     }
 
     await q('INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)', [name, email, message]);
-    queueEmailAlert('New Contact Form Submission', {
-      Name: name,
-      Email: email,
-      Message: message,
-      Page: cleanString(req.headers.referer, 255) || 'Contact section',
-      Time: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
-    });
+    if (ALERT_ON_CONTACT) {
+      queueEmailAlert('New Contact Form Submission', {
+        Name: name,
+        Email: email,
+        Message: message,
+        Page: cleanString(req.headers.referer, 255) || 'Contact section',
+        Time: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+      });
+    }
 
     return res.json({ success: true, message: 'Message saved' });
   } catch (error) {
@@ -1510,14 +1515,16 @@ app.post('/api/reviews', async (req, res) => {
     }
 
     await q('INSERT INTO reviews (name, role, text, rating) VALUES (?, ?, ?, ?)', [name, role || null, text, rating]);
-    queueEmailAlert('New Review Submitted', {
-      Name: name,
-      Role: role || 'Not provided',
-      Rating: `${rating} / 5`,
-      Review: text,
-      Page: cleanString(req.headers.referer, 255) || 'Review section',
-      Time: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
-    });
+    if (ALERT_ON_REVIEW) {
+      queueEmailAlert('New Review Submitted', {
+        Name: name,
+        Role: role || 'Not provided',
+        Rating: `${rating} / 5`,
+        Review: text,
+        Page: cleanString(req.headers.referer, 255) || 'Review section',
+        Time: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+      });
+    }
 
     return res.json({ success: true, message: 'Review added' });
   } catch (error) {
@@ -2166,6 +2173,31 @@ app.get('/api/admin/session', requireAdminAuth, (req, res) => {
     success: true,
     expiresAt: Number(req.adminAuth?.exp || 0)
   });
+});
+
+app.post('/api/admin/test-email', requireAdminAuth, async (req, res) => {
+  try {
+    const sent = await sendEmailAlert('Admin Test Alert', {
+      Status: 'Email alerts are connected',
+      Page: cleanString(req.body?.page, 255) || 'Admin panel',
+      Time: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+    });
+
+    if (!sent) {
+      return res.status(400).json({
+        success: false,
+        error: 'Mail alerts are not configured. Check MAIL_USER, MAIL_PASS, MAIL_FROM and ALERT_EMAIL_TO.'
+      });
+    }
+
+    return res.json({ success: true, message: 'Test email sent' });
+  } catch (error) {
+    console.error('Test email failed:', error.code || '', error.response || error.message);
+    return res.status(500).json({
+      success: false,
+      error: error.response || error.message || 'Failed to send test email'
+    });
+  }
 });
 
 app.get('/api/stats', requireAdminAuth, async (_req, res) => {

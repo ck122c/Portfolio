@@ -31,6 +31,14 @@ services:
         sync: false
       - key: ALERT_EMAIL_TO
         sync: false
+      - key: ALERT_ON_CONTACT
+        value: true
+      - key: ALERT_ON_REVIEW
+        value: true
+      - key: ALERT_ON_VISIT
+        value: true
+      - key: ALERT_VISIT_THROTTLE_MINUTES
+        value: 0
       - key: MAIL_USER
         sync: false
       - key: MAIL_PASS
