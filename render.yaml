@@ -46,8 +46,10 @@ services:
       - key: MAIL_HOST
         value: smtp.gmail.com
       - key: MAIL_PORT
-        value: 465
+        value: 587
       - key: MAIL_SECURE
-        value: true
+        value: false
       - key: MAIL_FROM
         sync: false
+      - key: MAIL_CONNECTION_TIMEOUT_MS
+        value: 12000

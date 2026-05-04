@@ -214,26 +214,56 @@ function escapeHtml(value) {
     .replace(/'/g, '&#039;');
 }
 
-let alertTransporter = null;
+const MAIL_CONNECTION_TIMEOUT_MS = Number(readStringEnv('MAIL_CONNECTION_TIMEOUT_MS', '12000')) || 12000;
+let alertTransporters = new Map();
 let mailWarningShown = false;
 let lastVisitAlertAt = 0;
 
-function getAlertTransporter() {
-  if (!nodemailer || !MAIL_USER || !MAIL_PASS || !ALERT_EMAIL_TO) return null;
-  if (alertTransporter) return alertTransporter;
-
-  alertTransporter = nodemailer.createTransport({
+function getMailTransportConfigs() {
+  const primary = {
     host: MAIL_HOST,
     port: MAIL_PORT,
     secure: MAIL_SECURE,
-    pool: true,
+    label: `${MAIL_HOST}:${MAIL_PORT}`
+  };
+  const configs = [primary];
+  const isGmail = MAIL_HOST.toLowerCase().includes('gmail');
+
+  // Render/Gmail can timeout on SMTPS 465. STARTTLS 587 is the safer fallback.
+  if (isGmail && MAIL_PORT !== 587) {
+    configs.push({
+      host: MAIL_HOST,
+      port: 587,
+      secure: false,
+      label: `${MAIL_HOST}:587-fallback`
+    });
+  }
+
+  return configs;
+}
+
+function getAlertTransporter(config) {
+  if (!nodemailer || !MAIL_USER || !MAIL_PASS || !ALERT_EMAIL_TO) return null;
+  const key = `${config.host}:${config.port}:${config.secure}`;
+  if (alertTransporters.has(key)) return alertTransporters.get(key);
+
+  const transporter = nodemailer.createTransport({
+    host: config.host,
+    port: config.port,
+    secure: config.secure,
+    requireTLS: !config.secure,
+    family: 4,
+    connectionTimeout: MAIL_CONNECTION_TIMEOUT_MS,
+    greetingTimeout: MAIL_CONNECTION_TIMEOUT_MS,
+    socketTimeout: MAIL_CONNECTION_TIMEOUT_MS,
     auth: {
       user: MAIL_USER,
       pass: MAIL_PASS
     }
   });
 
-  return alertTransporter;
+  alertTransporters.set(key, transporter);
+  return transporter;
 }
 
 function buildAlertEmail(title, fields = {}) {
@@ -270,8 +300,7 @@ function buildAlertEmail(title, fields = {}) {
 }
 
 async function sendEmailAlert(title, fields = {}) {
-  const transporter = getAlertTransporter();
-  if (!transporter) {
+  if (!nodemailer || !MAIL_USER || !MAIL_PASS || !ALERT_EMAIL_TO) {
     if (!mailWarningShown) {
       console.warn('Mail alerts disabled. Add MAIL_USER, MAIL_PASS and ALERT_EMAIL_TO in Backend/.env');
       mailWarningShown = true;
@@ -280,16 +309,30 @@ async function sendEmailAlert(title, fields = {}) {
   }
 
   const { html, text } = buildAlertEmail(title, fields);
-  const info = await transporter.sendMail({
+  const message = {
     from: MAIL_FROM,
     to: ALERT_EMAIL_TO,
     subject: `Portfolio Alert: ${title}`,
     text,
     html
-  });
+  };
 
-  console.log('✅ Email alert sent:', info.messageId || title);
-  return true;
+  let lastError = null;
+  for (const config of getMailTransportConfigs()) {
+    try {
+      const transporter = getAlertTransporter(config);
+      const info = await transporter.sendMail(message);
+      console.log('✅ Email alert sent:', info.messageId || title, `via ${config.label}`);
+      return true;
+    } catch (error) {
+      lastError = error;
+      const retryable = ['ETIMEDOUT', 'ECONNECTION', 'ESOCKET'].includes(error.code);
+      console.error(`Email alert failed on ${config.label}:`, error.code || '', error.response || error.message);
+      if (!retryable) break;
+    }
+  }
+
+  throw lastError || new Error('Failed to send email alert');
 }
 
 function queueEmailAlert(title, fields = {}) {
