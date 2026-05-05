@@ -1503,31 +1503,57 @@ app.delete('/api/resume-upload', requireAdminAuth, async (_req, res) => {
    CONTACT APIs SECTION
    ============================================================ */
 app.post('/api/contact', async (req, res) => {
-  try {
-    const name = cleanString(req.body?.name, 120);
-    const email = cleanString(req.body?.email, 160);
-    const message = cleanString(req.body?.message, 2000);
+  const name = cleanString(req.body?.name, 120);
+  const email = cleanString(req.body?.email, 160);
+  const message = cleanString(req.body?.message, 2000);
 
-    if (!name || !email || !message) {
-      return res.status(400).json({ success: false, error: 'All fields required' });
-    }
-
-    await q('INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)', [name, email, message]);
-    if (ALERT_ON_CONTACT) {
-      queueEmailAlert('New Contact Form Submission', {
-        Name: name,
-        Email: email,
-        Message: message,
-        Page: cleanString(req.headers.referer, 255) || 'Contact section',
-        Time: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
-      });
-    }
-
-    return res.json({ success: true, message: 'Message saved' });
-  } catch (error) {
-    console.error('❌ Contact Error:', error);
-    return res.status(500).json({ success: false, error: 'Failed to save contact' });
+  if (!name || !email || !message) {
+    return res.status(400).json({ success: false, error: 'All fields required' });
   }
+
+  const alertFields = {
+    Name: name,
+    Email: email,
+    Message: message,
+    Page: cleanString(req.headers.referer, 255) || 'Contact section',
+    Time: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+  };
+
+  let saved = false;
+  let emailSent = false;
+
+  try {
+    await q('INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)', [name, email, message]);
+    dbReady = true;
+    saved = true;
+  } catch (error) {
+    dbReady = false;
+    console.error('❌ Contact DB Save Error:', error.message || error);
+  }
+
+  try {
+    if (ALERT_ON_CONTACT) {
+      if (saved) {
+        queueEmailAlert('New Contact Form Submission', alertFields);
+      } else {
+        emailSent = await sendEmailAlert('New Contact Form Submission', alertFields);
+      }
+    }
+  } catch (error) {
+    console.error('❌ Contact Email Error:', error.message || error);
+  }
+
+  if (saved || emailSent) {
+    return res.json({
+      success: true,
+      message: saved ? 'Message saved' : 'Message sent'
+    });
+  }
+
+  return res.status(503).json({
+    success: false,
+    error: 'Contact service temporarily unavailable'
+  });
 });
 
 app.get('/api/contact', requireAdminAuth, async (_req, res) => {
