@@ -1209,12 +1209,12 @@ function initContactLocationMap() {
         alert("✅ Message sent successfully!");
         contactForm.reset();
       } else {
-        alert("❌ Failed");
+        alert(`❌ ${data.error || "Failed"}`);
       }
 
     } catch (err) {
       console.error(err);
-      alert("❌ Server error");
+      alert("❌ Contact service unavailable");
     }
   });
 }
