@@ -54,6 +54,7 @@ const DB_PASS = readStringEnv('DB_PASS', '12345678');
 const DB_NAME = readStringEnv('DB_NAME', 'portfolio');
 const DB_SSL = readBooleanEnv('DB_SSL', false);
 const DB_SSL_REJECT_UNAUTHORIZED = readBooleanEnv('DB_SSL_REJECT_UNAUTHORIZED', true);
+const DB_CONNECT_TIMEOUT_MS = Number(readStringEnv('DB_CONNECT_TIMEOUT_MS', '10000')) || 10000;
 const ADMIN_PASS = readStringEnv('ADMIN_PASS', 'Chandan@123');
 const ADMIN_PASS_ALIASES = new Set([
   normalizeAdminPassword(ADMIN_PASS),
@@ -93,7 +94,8 @@ app.get('/healthz', (_req, res) => {
   return res.json({
     ok: true,
     service: 'portfolio',
-    status: 'healthy'
+    status: 'healthy',
+    database: dbReady ? 'ready' : 'initializing'
   });
 });
 
@@ -126,10 +128,13 @@ const db = mysql.createPool({
   password: DB_PASS,
   database: DB_NAME,
   ssl: DB_SSL ? { rejectUnauthorized: DB_SSL_REJECT_UNAUTHORIZED } : undefined,
+  connectTimeout: DB_CONNECT_TIMEOUT_MS,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
 });
+
+let dbReady = false;
 
 /* ============================================================
    SHARED HELPERS SECTION
@@ -2334,21 +2339,25 @@ app.get('/resume', (_req, res) => {
 /* ============================================================
    BOOTSTRAP SECTION
    ============================================================ */
-async function startServer() {
+async function initializeDatabase() {
   try {
     await q('SELECT 1');
     console.log('✅ MySQL Connected');
 
     await ensureSchema();
     console.log('✅ DB schema ready');
-
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
-    });
+    dbReady = true;
   } catch (error) {
-    console.error('❌ Server startup failed:', error.message || error);
-    process.exit(1);
+    dbReady = false;
+    console.error('❌ Database initialization failed:', error.message || error);
   }
+}
+
+function startServer() {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    initializeDatabase();
+  });
 }
 
 startServer();
